@@ -1,0 +1,19 @@
+{
+  "name": "categorical-handlers",
+  "version": "0.1.0",
+  "description": "The provide speciation for an endpoint server. Two typs are available this revision: users and persistence. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/copious-world/categorical-handlers.git"
+  },
+  "author": "R Leddy",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/copious-world/categorical-handlers/issues"
+  },
+  "homepage": "https://github.com/copious-world/categorical-handlers#readme"
+}
