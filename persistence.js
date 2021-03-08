@@ -88,6 +88,21 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
         }
     }
 
+    async unpublish(msg_obj) {        // remove from publication directory... this file becomes unavailable to the general public...
+        let user_path = ""
+        try {
+            //
+            let public_path = this.make_public_path(msg_obj)
+            await fsPromises.rm(public_path)
+            //
+            return "OK"
+        } catch(e) {
+            console.log(user_path)
+            console.log(e)
+            return "ERR"
+        }
+    }
+
     // data coming from a user dashboard, profile, etc.
     async create_entry_type(msg_obj) {  // to the user's directory
         let user_path = ""
@@ -191,6 +206,10 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
         switch ( op ) {
             case 'P' : {
                 result = await this.publish(msg_obj)
+                break
+            }
+            case 'U' : {
+                result = await this.unpublish(msg_obj)
                 break
             }
             case 'G' : {        // get user information
