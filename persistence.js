@@ -15,6 +15,8 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
             this._type_directories = Object.assign({},conf.directories)
         }
         this.create_OK = conf.create_OK
+        this.app_subscriptions_ok = false
+
         //
         this.ensure_directories('admin')
         this.init_public_directories()
@@ -212,6 +214,11 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
         }
         //
         return({ "status" : result, "explain" : `${op} performed`, "when" : Date.now() })
+    }
+
+    app_subscription_handler(topic,msg_obj) {
+        msg_obj._tx_op = 'P'
+        this.app_message_handler(msg_obj)
     }
 }
 
