@@ -35,6 +35,7 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
         //
         let public_path = this._type_directories[entry_type]
         public_path += '/' + msg_obj[msg_obj.key_field] + ".json"    
+        return public_path
     }
 
     user_action_keyfile(op,obj) {}
@@ -216,6 +217,10 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
                 let stat = "OK"
                 let data = await this.load_data(msg_obj)
                 if ( data === false ) { stat = "ERR"; data = "" }
+                else {
+console.log("callling application_data_update")
+                    data = this.application_data_update(msg_obj,data)
+                }
                 return({ "status" : stat, "data" : data,  "explain" : "get", "when" : Date.now() })
             }
             case 'D' : {        // delete asset from everywhere if all ref counts to zero. (unpinned)
@@ -238,6 +243,10 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
     app_subscription_handler(topic,msg_obj) {
         msg_obj._tx_op = 'P'
         this.app_message_handler(msg_obj)
+    }
+
+    application_data_update(msg_obj,data) {
+        return(data)
     }
 }
 

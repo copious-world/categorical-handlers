@@ -53,7 +53,7 @@ class UserMessageEndpoint extends ServeMessageEndpoint {
         let assets_dir = `${this.user_directory}/${user_id}`
         // assumes that the assets directories have been created
         let dir_paths = {
-            "base" : assets_dir.substr(1)  // no '.' at front
+            "base" : assets_dir
         }
         msg_obj.dir_paths = dir_paths
         await asset_generator(this.template_dir,assets_dir,msg_obj,this._gen_targets)
