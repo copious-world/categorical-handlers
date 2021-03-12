@@ -24,8 +24,8 @@ class UserMessageEndpoint extends ServeMessageEndpoint {
 
     make_path(u_obj) {
         let user_id = u_obj._id
-                    // password is a hash of the password, might encrypt it... (also might carry other info to the back..)
-        let user_path = `${this.all_users}/${user_id}_${u_obj.password}.json`
+        // password is a hash of the password, might encrypt it... (also might carry other info to the back..)
+        let user_path = `${this.all_users}/${user_id}_${u_obj._tracking}.json`
         return(user_path)
     }
     //
@@ -48,7 +48,7 @@ class UserMessageEndpoint extends ServeMessageEndpoint {
     }
 
 
-    async create_user_assets(msg_obj) {
+    async create_user_assets(u_obj) {
         let user_id = msg_obj._id
         let assets_dir = `${this.user_directory}/${user_id}`
         // assumes that the assets directories have been created
@@ -56,16 +56,16 @@ class UserMessageEndpoint extends ServeMessageEndpoint {
             "base" : assets_dir
         }
         msg_obj.dir_paths = dir_paths
-        await asset_generator(this.template_dir,assets_dir,msg_obj,this._gen_targets)
+        await asset_generator(this.template_dir,assets_dir,u_obj,this._gen_targets)
     }
 
 
     //
     async create_entry_type(msg_obj) {  // to the user's directory
         try {
+            msg_obj._tracking = this.app_generate_tracking(msg_obj)
             let user_path = this.make_path(msg_obj)
             if ( !(user_path) ) return "ERR"
-console.log(`create_entry_type  ${user_path}`)
             await fsPromises.writeFile(user_path,(JSON.stringify(msg_obj)),{ 'flag' : 'wx' })
             return "OK"
         } catch(e) {
@@ -161,6 +161,14 @@ console.log(`load_data  ${user_path}`)
         //
         return({ "status" : result, "explain" : "op performed", "when" : Date.now() })
     }
+
+    //
+    app_generate_tracking(msg_obj) {
+        console.log("the application class should implement app_generate_tracking")
+        return uuid4()
+    }
+
+
 }
 
 

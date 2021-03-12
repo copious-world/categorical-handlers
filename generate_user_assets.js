@@ -11,7 +11,7 @@ const g_output_dir = "test_output"
 const g_template_dir = './user_templates'
 
 // // 
-async function load_template_package(dirpath,noisy,cb) {
+async function map_on_load_template_package(dirpath,noisy,cb) {
     try {
         let files = await fsPromises.readdir(dirpath)
         let p_list = files.map(async file => { 
@@ -52,15 +52,17 @@ async function load_template_package(dirpath,noisy,cb) {
 // to be spawned --- do not want to keep this in process... 
 
 
-async function generate_user_custom_file(path,template_src,user_obj,custom_gen) {
+async function generate_user_custom_file(path,path_key,template_src,user_obj,custom_gen) {
     if ( custom_gen ) {
-        content = custom_gen(user_obj)
+        content = custom_gen(user_obj,path_key)
         fs.writeFile(path,content,(err) => {})
     } else {
         try {
             let template = Handlebars.compile(template_src);
+            user_obj.path_key = path_key
             let content = template(user_obj);
             fs.writeFile(path,content,(err) => {})    
+            delete user_obj.path_key
         } catch (e) {
             console.error(e)
         }    
@@ -68,11 +70,12 @@ async function generate_user_custom_file(path,template_src,user_obj,custom_gen) 
 }
 
 
-async function run_all(input_dir,user_dir,user_obj,custom_procs) {
+async function run_all_asset_generator(input_dir,user_dir,user_obj,custom_procs) {
     //
-    await load_template_package(input_dir,true, async (html_template,ky_path) => {
+    // map_on_load_template_package --> maps over files in a the directory where templates may be stored.
+    await map_on_load_template_package(input_dir,true, async (html_template,ky_path) => {
         let ext = ".html"
-        if ( custom_procs ) {
+        if ( custom_procs && custom_procs.extension ) {       // custom procs comes from a config and specifies an application prefered extension
             ext = custom_procs.extension
         }
         let out_path = `${user_dir}/${ky_path}${ext}`
@@ -82,7 +85,7 @@ async function run_all(input_dir,user_dir,user_obj,custom_procs) {
             user_obj.dir_paths[`${ky_path}`] = stored_path
             custom_gen = custom_procs[`${ky_path}`]
         }
-        generate_user_custom_file(out_path,html_template,user_obj,custom_gen)
+        generate_user_custom_file(out_path,ky_path,html_template,user_obj,custom_gen)
     })
     //
 }
@@ -98,4 +101,4 @@ let user_obj = {
 run_all(g_template_dir,g_output_dir,user_obj)
 */
 
-module.exports.asset_generator = run_all
+module.exports.asset_generator = run_all_asset_generator

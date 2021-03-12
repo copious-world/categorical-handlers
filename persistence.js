@@ -218,7 +218,6 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
                 let data = await this.load_data(msg_obj)
                 if ( data === false ) { stat = "ERR"; data = "" }
                 else {
-console.log("callling application_data_update")
                     data = this.application_data_update(msg_obj,data)
                 }
                 return({ "status" : stat, "data" : data,  "explain" : "get", "when" : Date.now() })
