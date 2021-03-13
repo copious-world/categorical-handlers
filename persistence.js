@@ -110,6 +110,7 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
         try {
             user_path = this.make_path(msg_obj)
             if ( !(user_path) ) return "ERR"
+            this.user_manage_date('C',msg_obj)
             await fsPromises.writeFile(user_path,JSON.stringify(msg_obj))
             this.user_action_keyfile('C',msg_obj)
             return "OK"
@@ -149,6 +150,7 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
                     if ( ky === '_id' ) continue;
                     u_obj[ky] = msg_obj[ky]
                 }
+                this.user_manage_date('U',msg_obj)
                 await fsPromises.writeFile(user_path,JSON.stringify(u_obj))
                 this.user_action_keyfile('U',msg_obj)
                 return "OK"
@@ -246,6 +248,10 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
 
     application_data_update(msg_obj,data) {
         return(data)
+    }
+
+    user_manage_date(op,msg_obj) {
+        // do nothing ... the application implements.... the application should know of the kind of date fields that would be used by search services.
     }
 }
 
