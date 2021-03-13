@@ -25,7 +25,11 @@ class UserMessageEndpoint extends ServeMessageEndpoint {
     make_path(u_obj) {
         let user_id = u_obj._id
         // password is a hash of the password, might encrypt it... (also might carry other info to the back..)
-        let user_path = `${this.all_users}/${user_id}_${u_obj._tracking}.json`
+        let tracking = u_obj._tracking
+        if ( tracking === undefined ) {
+            return false
+        }
+        let user_path = `${this.all_users}/${user_id}_${tracking}.json`
         return(user_path)
     }
     //
