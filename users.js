@@ -49,13 +49,13 @@ class UserMessageEndpoint extends ServeMessageEndpoint {
 
 
     async create_user_assets(u_obj) {
-        let user_id = msg_obj._id
+        let user_id = u_obj._id
         let assets_dir = `${this.user_directory}/${user_id}`
         // assumes that the assets directories have been created
         let dir_paths = {
             "base" : assets_dir
         }
-        msg_obj.dir_paths = dir_paths
+        u_obj.dir_paths = dir_paths
         await asset_generator(this.template_dir,assets_dir,u_obj,this._gen_targets)
     }
 
