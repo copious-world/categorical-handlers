@@ -3,6 +3,8 @@ const {ServeMessageEndpoint} = require("message-relay-services")
 const fsPromises = require('fs/promises')
 //
 
+const DEFAULT_ORIGIN_PUBLIC_PATH = "copious"
+
 // Parent class handles publication 
  
 class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general class forwards publication...
@@ -34,6 +36,17 @@ class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general c
         let entry_type = msg_obj.asset_type
         //
         let public_path = this._type_directories[entry_type]
+        if ( typeof public_path !== 'string' ) {
+            if ( public_path === undefined ) {
+                origin = DEFAULT_ORIGIN_PUBLIC_PATH
+            } else {
+                let origin = msg_obj._origin
+                if ( origin === undefined ) {
+                    origin = DEFAULT_ORIGIN_PUBLIC_PATH
+                }
+                public_path = public_path[origin]    
+            }
+        }
         public_path += '/' + msg_obj[msg_obj.key_field] + ".json"    
         return public_path
     }
