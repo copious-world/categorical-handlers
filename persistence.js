@@ -6,7 +6,7 @@ const fsPromises = require('fs/promises')
 const DEFAULT_ORIGIN_PUBLIC_PATH = "copious"
 
 // Parent class handles publication 
- 
+//
 class PersistenceMessageEndpoint extends ServeMessageEndpoint { // the general class forwards publication...
 
     constructor(conf) {
