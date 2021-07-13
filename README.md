@@ -52,9 +52,11 @@ Here is more detail on the classes.
 * G - get the user object - reads the object from the list of all users.
 * D - delete the object with the **\_id**. (not implemented)
 
-This class provide a stub for  **app_generate_tracking(msg_obj)**.
+This class provide a stub for  **app\_generate\_tracking(msg_obj)** and also for **app\_asset\_generator(template\_dir,user\_obj,gen\_targets)**
 
-This class has a field **create\_OK** set to true, meaning that it is OK to create non-existant directories belonging users. Some application may want to set this field to false.
+> **app\_asset\_generator** should return a map of asset keys to string representations of assets. The assets will be directly written to files. The keys will be from *gen\_targets*.
+
+This class has a field **create\_OK** set to true, meaning that it is OK to create non-existant directories belonging users. Some applications may want to set this field to false in the descendent classes.
 
 #### Configure UserCategory
 
