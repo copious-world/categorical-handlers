@@ -101,7 +101,7 @@ test('users', async t => {
     let u_obj = {
         "_id" : "ss8fsuwur9wur"
     }
-    let OK = await inert.ensure_directories(u_obj._id)
+    let OK = await inert.ensure_user_directories(u_obj._id)
     t.true(OK,"ensure_directories OK")
 
 
@@ -175,7 +175,7 @@ test('users', async t => {
         "key_field" : "butter",
         "butter" : "avocados"
     }
-    OK = await inert2.ensure_directories(u_obj._id)
+    OK = await inert2.ensure_user_directories(u_obj._id)
     t.true(OK,"ensure_directories OK")
 
 
