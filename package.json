@@ -1,6 +1,6 @@
 {
   "name": "categorical-handlers",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "description": "The provide speciation for an endpoint server. Two typs are available this revision: users and persistence. ",
   "main": "index.js",
   "scripts": {
