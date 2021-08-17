@@ -35,7 +35,8 @@ test('paths', t => {
             "happy" : "assets/emotable_up",
             "sad" : "assets/emotable_down"
         },
-        "_gen_targets" : ["cake", "icecream"]
+        "_gen_targets" : ["cake", "icecream"],
+        "user_file_sep" : '+'
     }
 
     let inert = new TestClass(conf)
@@ -47,7 +48,7 @@ test('paths', t => {
     }
     let path = inert.make_path(u_obj)
 
-    t.is(path,"assets/ss8fsuwur9wur_skdnfsoir2bvn123b12v31343vbnv5.json")
+    t.is(path,"assets/ss8fsuwur9wur+skdnfsoir2bvn123b12v31343vbnv5.json")
 
     t.pass("this is a test")
 })
@@ -200,7 +201,7 @@ test('users', async t => {
     }
 
 
-    await fsPromises.rm("test/users/ss8fsuwur9wur_skdnfsoir2bvn123b12v31343vbnv5.json")
+    await fsPromises.rm("test/users/ss8fsuwur9wur+skdnfsoir2bvn123b12v31343vbnv5.json")
 
     OK = await inert.remove_directories(u_obj._id)
     t.true(OK,"remove_directories OK")
