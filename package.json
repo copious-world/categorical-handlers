@@ -1,6 +1,6 @@
 {
   "name": "categorical-handlers",
-  "version": "0.2.6",
+  "version": "0.2.8",
   "description": "The provide speciation for an endpoint server. Two typs are available this revision: users and persistence. ",
   "main": "index.js",
   "scripts": {
@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/copious-world/categorical-handlers#readme",
   "dependencies": {
-    "message-relay-services": "^0.4.5"
+    "message-relay-services": "^0.4.7"
   },
   "devDependencies": {
     "ava": "^3.15.0",

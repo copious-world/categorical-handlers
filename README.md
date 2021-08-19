@@ -2,8 +2,6 @@
 
 [![npm](https://img.shields.io/badge/npm-v7.20.3-brightgreen)](https://www.npmjs.com/package/categorical-handlers)
 
-
-
 This javascript package exposes three basic classes which are all specialized servers based on the **message-relay-services** ***ServeMessageEndpoint*** class:
 
 1. **UserCategory**	
