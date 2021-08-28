@@ -21,7 +21,7 @@
   },
   "homepage": "https://github.com/copious-world/categorical-handlers#readme",
   "dependencies": {
-    "message-relay-services": "^0.4.7"
+    "message-relay-services": "^0.4.8"
   },
   "devDependencies": {
     "ava": "^3.15.0",
