@@ -105,17 +105,19 @@ Besides this stub, this class provide three more.
 ```
 
 
-### 3. **CachingProcess**
+### 3. **Snapshot Process**
+
+Applications may retain snapshots of data stored in cache tables. Snapshots will be written to disk according to user configuration.
 
 Applications that implement descendents of this class may call ***startup\_sync()*** after the instance object is created. And, when the applcation is done with the process, it may call ***stop\_sync()***
 
-#### Configure CachingProcess
+#### Configure Snapshot  Process
 
 ```
 {
 	"all_users" : <directory for all user meta data objects>
-	"cache_dir" : <the backup directory for data checkpoints>,
-	"cache_interval" : <time in milliseconds>,
+	"snapshot_dir" : <the backup directory for data checkpoints>,
+	"snapshot_interval" : <time in milliseconds>,
 	"user_directory" : <top level directory of use assets>,
 	"directories" : <a map of blog types to directory paths>
 }
