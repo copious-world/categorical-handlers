@@ -6,7 +6,8 @@ This javascript package exposes three basic classes which are all specialized se
 
 1. **UserCategory**	
 2. **PersistenceCategory**
-3. **CachingProcess** 
+3. **PersistenceCachingCategory** 
+4. **PersistenceCachingIPCCategory**
 
 The application should override these classes and create instance methods.
 
@@ -16,7 +17,11 @@ The first two classes provide high level operation handling which may be useful 
 
 Innstances of *UserCategory* and *PersistenceCategory* read the **\_tx\_op** field of incoming messages in order to call the appropriate methods implemented by these classes.
 
-The third class, *CachingProcess*, provides a high level set of operations for starting up the cache (perhaps a RAM Disk) containing the JSON object files. It may be configured to read rom the cache and store on a backup disk attached to the machine on which the endpoints run.
+The third class, *PersistenceCachingCategory*, provides a high level set of operations for starting up the cache (perhaps a RAM Disk) containing the JSON object files. It may be configured to read rom the cache and store on a backup disk attached to the machine on which the endpoints run.
+
+Finally, a fourth class is provided, *PersistenceCachingIPCCategory*, which allows a client application to spawn a child persistence endpoint and be guaranteed IPC communication with the child process.
+
+Both *PersistenceCachingCategory* and *PersistenceCachingIPCCategory* provide the same functionality as *PersistenceCategory* but extend other internal classes derived from the caching class of the npm module, [extra-file-class](https://www.npmjs.com/package/extra-file-class)
 
 ### Operations
 
