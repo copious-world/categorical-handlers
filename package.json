@@ -11,8 +11,8 @@
     "url": "git+https://github.com/copious-world/categorical-handlers.git"
   },
   "funding": {
-    "type" : "GitHub Sponsors",
-    "url" : "https://github.com/sponsors/copious-world"
+    "type": "GitHub Sponsors",
+    "url": "https://github.com/sponsors/copious-world"
   },
   "author": "R Leddy",
   "license": "ISC",
@@ -21,11 +21,11 @@
   },
   "homepage": "https://github.com/copious-world/categorical-handlers#readme",
   "dependencies": {
+    "extra-file-class": "^0.9.9",
     "message-relay-services": "^0.9.12"
   },
   "devDependencies": {
     "ava": "^4.3.3",
     "nyc": "^15.1.0"
   }
-
 }
