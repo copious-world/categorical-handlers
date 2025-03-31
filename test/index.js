@@ -26,8 +26,8 @@ test('paths', t => {
 
 
     let conf = {
-        "port" : 500,
-        "address" : "my address",
+        "port" : 5560,
+        "address" : "localhost",
         "app_handles_subscriptions" : true,
         "all_users" : "assets",
         "user_directory" :  "assets/users",
@@ -47,6 +47,8 @@ test('paths', t => {
         "_tracking" : "skdnfsoir2bvn123b12v31343vbnv5"
     }
     let path = inert.make_path(u_obj)
+
+console.log(path)
 
     t.is(path,"assets/ss8fsuwur9wur+skdnfsoir2bvn123b12v31343vbnv5.json")
 
@@ -71,12 +73,9 @@ test('users', async t => {
 
         }
 
-        app_asset_generator(u_obj,target_list) {
-            let assets = {}
-            for ( let targ of target_list ) {
-                assets[targ] = JSON.stringify({ "txt" :  `This is ${targ} a test ${targ}` })
-            }
-            return assets
+        app_asset_generator(u_obj) {
+            console.dir(u_obj)
+            return false
         }
 
         app_generate_tracking(msg_obj) {
@@ -85,8 +84,8 @@ test('users', async t => {
     }
 
     let conf = {
-        "port" : 500,
-        "address" : "my address",
+        "port" : 5559,
+        "address" : "localhost",
         "app_handles_subscriptions" : true,
         "all_users" : "test/users",
         "user_directory" :  "test/assets/users",
@@ -142,12 +141,9 @@ test('users', async t => {
 
         }
 
-        app_asset_generator(u_obj,target_list) {
-            let assets = {}
-            for ( let targ of target_list ) {
-                assets[targ] = JSON.stringify({ "txt" :  `This is ${targ} a test ${targ}` })
-            }
-            return assets
+        app_asset_generator(u_obj) {
+            console.dir(u_obj)
+            return false
         }
 
         app_generate_tracking(msg_obj) {
@@ -156,8 +152,8 @@ test('users', async t => {
     }
 
     conf = {
-        "port" : 500,
-        "address" : "my address",
+        "port" : 5561,
+        "address" : "localhost",
         "app_handles_subscriptions" : true,
         "all_users" : "test/users",
         "user_directory" :  "test/assets/users",
@@ -207,6 +203,11 @@ test('users', async t => {
     t.true(OK,"remove_directories OK")
 
     t.pass("this is a test")
+
+    console.log("CLOSING STUFF")
+
+    inert.closeAll()
+    inert2.closeAll()
 })
 
 
