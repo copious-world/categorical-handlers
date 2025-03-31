@@ -8,6 +8,7 @@ This javascript package exposes three basic classes which are all specialized se
 2. **PersistenceCategory**
 3. **PersistenceCachingCategory** 
 4. **PersistenceCachingIPCCategory**
+5. **OperationsCategory**
 
 The application should override these classes and create instance methods.
 
@@ -15,17 +16,20 @@ The application should override these classes and create instance methods.
 
 The first two classes provide high level operation handling which may be useful for applications that handle the management of meta data files (records) for user/service relationships and for user/sevice management of user owned assets.
 
-Innstances of *UserCategory* and *PersistenceCategory* read the **\_tx\_op** field of incoming messages in order to call the appropriate methods implemented by these classes.
+Innstances of ***UserCategory*** and ***PersistenceCategory*** read the **\_tx\_op** field of incoming messages in order to call the appropriate methods implemented by these classes.
 
-The third class, *PersistenceCachingCategory*, provides a high level set of operations for starting up the cache (perhaps a RAM Disk) containing the JSON object files. It may be configured to read rom the cache and store on a backup disk attached to the machine on which the endpoints run.
+The third class, ***PersistenceCachingCategory***, provides a high level set of operations for starting up the cache (perhaps a RAM Disk) containing the JSON object files. It may be configured to read from the cache and store on a backup disk attached to the machine on which the endpoints run.
 
-Finally, a fourth class is provided, *PersistenceCachingIPCCategory*, which allows a client application to spawn a child persistence endpoint and be guaranteed IPC communication with the child process.
+The fourth class is provided, ***PersistenceCachingIPCCategory***, which allows a client application to spawn a child persistence endpoint and be guaranteed IPC communication with the child process.
 
 Both *PersistenceCachingCategory* and *PersistenceCachingIPCCategory* provide the same functionality as *PersistenceCategory* but extend other internal classes derived from the caching class of the npm module, [extra-file-class](https://www.npmjs.com/package/extra-file-class)
 
+The fifth class, ***OperationsCategory***, is fairly minimalist, but provides a framework for requesting data operations.
+
+
 ### Operations
 
-The field, **\_tx\_op**, is managed by the classes in **message-relay-services**.
+The field, **\_tx\_op**, is managed by the classes in [**message-relay-services**](https://www.npmjs.com/package/message-relay-services).
 
 These classes expects that the application will provide another field identifying the user associated with the JSON meta data object.
 
@@ -39,11 +43,13 @@ There is one more field expected in the class, **\_user\_op**. The classes expec
 
 The classes add a field **\_tracking**, which is also used in making file names and directories. The classes provide a method, *app_generate_tracking* that the application may overried to provide the **\_tracking** field value. This method, *app_generate_tracking*, should also return an encoded string.
 
-These classes implement the method **app\_message\_handler(msg_obj)** as required by the *ServeMessageEndpoint* class. The two classes differ in details on how they implement this method.
+These classes implement the method **app\_message\_handler(msg_obj)** as required by the *ServeMessageEndpoint* class from [**message-relay-services**](https://www.npmjs.com/package/message-relay-services). The two classes differ in details on how they implement this method.
+
+The operation class is more apt to use the user id in order to identify the local LAN server that is making requests to move data. Usually, in the case of its use, some arrangement with ssh has been made between the servers. Also, it is more likely that the endpoint implementations will make use of TLS.
 
 ### Install
 ```
-npm install categorical-handlers
+npm install -s categorical-handlers
 ```
 
 ## Classes
@@ -53,7 +59,7 @@ Here is more detail on the classes.
 
 ### 1. **UserCategory**
 
-*UserCategory* implements *app\_message\_handler(msg_obj)* handling the basic *\_tx\_op* operations. For this class, the expected values for *\_tx\_op* are the following:
+***UserCategory*** implements *app\_message\_handler(msg_obj)* handling the basic *\_tx\_op* operations. For this class, the expected values for *\_tx\_op* are the following:
 
 * S - set the user object by either creating or updating (*\_user\_op**)
 * G - get the user object - reads the object from the list of all users.
@@ -79,7 +85,7 @@ This class has a field **create\_OK** set to true, meaning that it is OK to crea
 
 ### 2. **PersistenceCategory**
 
-*UserCategory* implements *app\_message\_handler(msg_obj)* handling the basic *\_tx\_op* operations. For this class, the expected values for *\_tx\_op* are the following:
+***PersistenceCategory*** implements *`app_message_handler(msg_obj)`* handling the basic operations. For this class, the expected values for *`_tx_op`* are the following:
 
 * S - set the asset object by either creating or updating (*\_user\_op**)
 * G - get the asset object - reads the object from the list of all users.
@@ -109,22 +115,15 @@ Besides this stub, this class provide three more.
 }
 ```
 
+### 2. **OperationsCategory**
 
-### 3. **Snapshot Process**
+***OperationsCategory*** assumes it will receive messages with `_tx_op` set to G,S or R. These are *get*, *set*, and *reverse* - also known as *undo*.  It will publish to a "logging" path with topics "info-req" and "state-trns". It will call upon application to handle custom operations. It unpacks "op" and "parameters". It sends back a data object as part of its transaction response object. The data will have a field `_tx_op_hash` which is the application may use for identifying the operation. This class is used in the module [`repository-bridge`](https://www.npmjs.com/package/repository-bridge) in the LAN node implementation.
 
-Applications may retain snapshots of data stored in cache tables. Snapshots will be written to disk according to user configuration.
+For this class, the expected values for *\_tx\_op* are the following:
 
-Applications that implement descendents of this class may call ***startup\_sync()*** after the instance object is created. And, when the applcation is done with the process, it may call ***stop\_sync()***
+* S - Sends a q request for an operation which may return desired information as well.
+* G - Sends a q request for an operation which should return desired information. For example, it may request an upload directory.
+* R - Reverse an operation if its hash is known and it can be reversed.
 
-#### Configure Snapshot  Process
 
-```
-{
-	"all_users" : <directory for all user meta data objects>
-	"snapshot_dir" : <the backup directory for data checkpoints>,
-	"snapshot_interval" : <time in milliseconds>,
-	"user_directory" : <top level directory of use assets>,
-	"directories" : <a map of blog types to directory paths>
-}
-```
 

@@ -3,7 +3,7 @@ let PersistenceCategory = require('./lib/persistence')
 let PersistenceCachingCategory = require('./lib/persistence_caching')
 let PersistenceCachingIPCCategory = require('./lib/persistence_caching_IPC')
 let {ExtendedMessageRelayer,ExtendedMultiPathRelayClient} = require('./lib/extended_relay')
-let OperationsMessageEndpoint = require('./lib/operations')
+let OperationsCategory = require('./lib/operations')
 //
 
 module.exports = {
@@ -13,5 +13,5 @@ module.exports = {
     "PersistenceCachingIPCCategory" : PersistenceCachingIPCCategory,
     "MessageRelayer" : ExtendedMessageRelayer,
     "MultiPathRelayClient" : ExtendedMultiPathRelayClient,
-    "OperationsMessageEndpoint" : OperationsMessageEndpoint
+    "OperationsCategory" : OperationsCategory
 }
